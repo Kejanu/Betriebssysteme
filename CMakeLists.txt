@@ -3,4 +3,4 @@ project(BS C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(BS main.c)
+add_executable(BS qzahlen.c)
