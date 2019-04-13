@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
         for (int j = 1; j <= upperBound; ++j) {
             for (int k = 1; k <= upperBound; ++k) {
                 if ((pow(j,2) + pow(k,2)) == i) {
-                    printf("%d kann als %d^2 + %d^2 dargestellt werden\n", i, j ,k);
+                    printf("%d kann als %d + %d dargestellt werden\n", i, j ,k);
                     goto AFTERFOR;
                 }
             }
