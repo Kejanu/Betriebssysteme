@@ -58,9 +58,9 @@ Theoriefragen: Variablen in C
 
 main():                 text
 force():                text
-G:                      data/BSS
-mErde:                  data/BSS
-distanz:                stack     //?
+G:                      data
+mErde:                  data
+distanz:                BSS
 f:                      stack
 Parameter von force():  stack
 
@@ -69,5 +69,7 @@ Parameter von force():  stack
 
 //Alex
 
-distanz ist eine globale Variable  //?
+distanz und mErde sind globale Variablen, allerdings ist distanz nicht initialisiert und gelangt deshalb in das
+BSS(Block Storage)-Segment, welches zur Speicherung von uninitialisierten Daten dient. Da mErde initialisiert ist,
+findet in diesem Fall eine Speicherung im data-Segment, dem Segment für initialisierte Daten statt.
 
