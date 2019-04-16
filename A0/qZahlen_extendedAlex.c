@@ -11,11 +11,14 @@ void qZahlen(int grenze){
 
 
     for(int i=5; i<=grenze; i++){ //erste solche Zahl
+
         int done=0; //Falls Treffer -> Abbruch
-        for(int a=1; done==0 && a<=10; a++){ //Zahl1
-            for(int b=1;done==0 && b<=10; b++){ //Zahl2
+
+        for(int a=1; done==0 && a<=10; a++){
+            for(int b=1;done==0 && b<=10; b++){
+
                 if( a!=b && a*a + b*b == i){ //Schließt gleiche Zahlen aus
-                    printf("%d: %d + %d\n", i, a, b);
+                    printf("%d: %d^2 + %d^2\n", i, a, b);
                     done=1;
 
                 }

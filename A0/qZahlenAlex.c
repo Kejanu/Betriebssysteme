@@ -3,15 +3,18 @@
 //
 #include <stdio.h>
 
-//Zahlenprüfung bis 10
+
 
 void qZahlen(void){
 
 
     for(int i=5; i<=100; i++){ //erste solche Zahl
+
         int done=0; //Falls ein Treffer vorliegt -> Abbruch
-        for(int a=1; done==0 && a<=10; a++){ //Zahl1
-            for(int b=1;done==0 && b<=10; b++){ //Zahl2
+
+        for(int a=1; done==0 && a<=10; a++){
+            for(int b=1;done==0 && b<=10; b++){
+
                 if( a!=b && a*a + b*b == i){ //schließt Kombination gleicher Zahlen aus
                     printf("%d: %d^2 + %d^2\n", i, a, b);
                     done=1;
