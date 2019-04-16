@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
     while(i <= 100) {
         for (int j = 1; j <= upperBound; ++j) {
             for (int k = 1; k <= upperBound; ++k) {
-                if ((pow(j,2) + pow(k,2)) == i) {
+                if (i!=j && (pow(j,2) + pow(k,2)) == i) {
                     printf("%d kann als %d + %d dargestellt werden\n", i, j ,k);
                     goto AFTERFOR;
                 }
