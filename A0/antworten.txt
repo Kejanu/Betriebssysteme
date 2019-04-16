@@ -16,9 +16,11 @@ d.h. das Programm kann ausgeführt werden.
 
 //Alex
 
-Das Kommando man ruft das Handbuch (manual) für Befehle auf. "man 1 printf" gibt dabei die erste Seite des
-Handbuches aus, "man 3 printf" die dritte.
-    //Inhalte/Abschnitte?
+Das Kommando man ruft das Handbuch (manual) für Befehle auf. Dieses Handbuch ist in Abschnitte unterteilt, wobei
+Abschnitt 1 Kommandos und Abschnitt 3 C-Bibliotheksfunktionen behandelt. Mit man 1 printf (bzw. man 3 printf) wird dann
+im jeweiligen Abnschnitt nach der Funktion printf durchsucht. Dies ergibt Sinn, da die Funktion printf sowohl als
+Kommando, als auch als Bibliotheksfunktion zu finden ist, sodass gezielt nach dem "richtigen" printf gesucht werden
+kann.
 
 
 3.
