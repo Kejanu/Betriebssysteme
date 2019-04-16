@@ -9,7 +9,7 @@ Theoriefragen: Systemumgebung
 Ein Kommando beginnt immer mit einem Namen, der zugleich den Dateinamen darstellt. Wird ein Kommando in die Shell
 eingegeben, werden alle Verzeichnisse, die unter der Umgebungsvariablen PATH angegeben sind (es können beliebig viele
 angegeben werden) nach einer Datei mit diesem Namen durchsucht. Ist diese Suche erfolgreich, kann das gefundene
-Programm und damit auch das Kommando ausgeführt werden.
+Programm (vorausgesetzt es ist ein ausführbares Programm) und damit auch das Kommando ausgeführt werden.
 
 
 2.
@@ -32,6 +32,7 @@ kann.
 (Vorher zum Ordner navigieren)
 grep 'todo' ./* -n
 
+--Passt so
 
 4.
 
@@ -39,6 +40,8 @@ grep 'todo' ./* -n
 
 (Vorher zum Vereichnis navigieren)
 gcc ./Datei.c -o exec.out
+
+--Das ./ ist doppelgemoppel aber passt auch
 
 5.
 
@@ -50,7 +53,7 @@ Umbenennen:
 (Vorher zum Verzeichnis navigieren, Datei hieß vorher 'alt' und soll 'neu' heißen)
 mv ./alt ./neu
 
-
+--Das ./ ist doppelgemoppel aber passt auch
 
 Theoriefragen: Variablen in C
 
@@ -66,12 +69,26 @@ distanz:                BSS
 f:                      stack
 Parameter von force():  stack
 
+//Kevin
+Block-Storage-Segment 	-	uninitialisierte Daten
+Datensegment 			-	vorinitialisierte Daten
+
+main() 	=>	Textsegment
+force() =>	Textsegment
+G		=>	Datensegment
+mErde	=>	Datensegment
+distanz	=>	Datensegment (Block-Storage-Segment)
+d2		=>	Stack
+f		=>	Stack
+Paramter der Funktion force()	=>	Stack
 
 2.
 
 //Alex
 
 distanz und mErde sind globale Variablen, allerdings ist distanz nicht initialisiert und gelangt deshalb in das
-BSS(Block Storage)-Segment, welches zur Speicherung von uninitialisierten Daten dient. Da mErde initialisiert ist,
-findet in diesem Fall eine Speicherung im data-Segment, dem Segment für initialisierte Daten statt.
+BSS(Block Storage)-Segment, welches zur Speicherung von uninitialisierten, globalen Daten dient. Da mErde initialisiert ist,
+findet in diesem Fall eine Speicherung im data-Segment, dem Segment für globale initialisierte Daten statt.
+
+--Habe an zwei Stellen globale ergänzt.
 
