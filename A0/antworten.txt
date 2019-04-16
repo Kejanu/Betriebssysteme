@@ -8,8 +8,8 @@ Theoriefragen: Systemumgebung
 
 Ein Kommando beginnt immer mit einem Namen, der zugleich den Dateinamen darstellt. Wird ein Kommando in die Shell
 eingegeben, werden alle Verzeichnisse, die unter der Umgebungsvariablen PATH angegeben sind (es können beliebig viele
-angegeben werden) nach dieser Datei durchsucht. Ist diese Suche erfolgreich, kann das Kommando ausgeführt werden,
-d.h. das Programm kann ausgeführt werden.
+angegeben werden) nach einer Datei mit diesem Namen durchsucht. Ist diese Suche erfolgreich, kann das gefundene
+Programm und damit auch das Kommando ausgeführt werden.
 
 
 2.
