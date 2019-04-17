@@ -4,10 +4,6 @@
 #include <string.h>
 
 int main(int argc, char* argv[]) {
-
-//    printf("Argc: %d\n", argc);
-//    printf("Argv: %s\n", argv[0]);
-
     if (argc <= 1) {
         printf("Fehler: Keine Obergrenze angegeben");
         return 1;
@@ -29,6 +25,8 @@ int main(int argc, char* argv[]) {
       long int strtol(const char *nptr, char **endptr, int base);
 
      */
+
+    // The atoi() function converts the initial portion of the string pointed to by nptr to int. The behavior is the same as
     inputNumber = strtol(argv[1], &endptr, 10);
 
     if (inputNumber <= 0 || strlen(endptr) > 0) {
@@ -45,7 +43,7 @@ int main(int argc, char* argv[]) {
     while(i <= 100) {
         for (int j = 1; j <= upperBound; ++j) {
             for (int k = 1; k <= upperBound; ++k) {
-                if (i!=j && (pow(j,2) + pow(k,2)) == i) {
+                if (j != k && (pow(j,2) + pow(k,2)) == i) {
                     printf("%d kann als %d + %d dargestellt werden\n", i, j ,k);
                     goto AFTERFOR;
                 }
