@@ -4,6 +4,7 @@
 #include <string.h>
 
 int main(int argc, char* argv[]) {
+    // Basic input validation
     if (argc <= 1) {
         printf("Fehler: Keine Obergrenze angegeben");
         return 1;
@@ -17,34 +18,32 @@ int main(int argc, char* argv[]) {
     int inputNumber;
     char *endptr;
 
-    /*
-      If endptr is not NULL, strtol() stores the address of the first invalid character in *endptr.
-      If there were no digits at all, strtol() stores the original value of nptr in *endptr (and returns 0).
-      In particular, if *nptr is not '\0' but **endptr is '\0' on return, the entire string is valid.
-
-      long int strtol(const char *nptr, char **endptr, int base);
-
-     */
-
-    // The atoi() function converts the initial portion of the string pointed to by nptr to int. The behavior is the same as
+    // We use strtol, cause atoi's functionallity wasn't sufficient for us
     inputNumber = strtol(argv[1], &endptr, 10);
 
-    if (inputNumber <= 0 || strlen(endptr) > 0) {
-        printf("Fehler: Eingegebene Zahl ist kleiner als 1 oder keine ganze Zahl");
+    // More input validation
+    if (*endptr != '\0') {
+        printf("Fehler: Eingabe war Text order keine ganze Zahl");
         return 1;
     }
 
-    printf("Eingabe: %d\n", inputNumber);
+    if (inputNumber <= 0) {
+        printf("Fehler: Eingegebene Zahl ist kleiner als 1");
+        return 1;
+    }
 
-    int upTo = inputNumber;
-    int upperBound = (int)sqrt(upTo);
+    printf("Ihre Eingabe: %d\n", inputNumber);
+
+    // Calculate upperBound to ignore redundant loops
+    int upperBound = (int)sqrt(inputNumber);
 
     int i = 1;
-    while(i <= 100) {
+    while(i <= inputNumber) {
         for (int j = 1; j <= upperBound; ++j) {
             for (int k = 1; k <= upperBound; ++k) {
                 if (j != k && (pow(j,2) + pow(k,2)) == i) {
-                    printf("%d kann als %d + %d dargestellt werden\n", i, j ,k);
+                    printf("%d kann als %d^2 + %d^2 dargestellt werden\n", i, j ,k);
+                    // Use of goto, to only print one result for each iteration of i
                     goto AFTERFOR;
                 }
             }
