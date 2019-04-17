@@ -1,0 +1,68 @@
+
+Theoriefragen: Systemumgebung
+
+
+1.
+
+Ein Kommando beginnt immer mit einem Namen, der zugleich den Dateinamen darstellt. Wird ein Kommando in die Shell
+eingegeben, werden alle Verzeichnisse, die unter der Umgebungsvariablen PATH angegeben sind (es können beliebig viele
+angegeben werden) nach einer Datei mit diesem Namen durchsucht. Ist diese Suche erfolgreich, kann das gefundene
+Programm (vorausgesetzt es ist ein ausführbares Programm) und damit auch das Kommando ausgeführt werden.
+
+
+2.
+
+Das Kommando man ruft das Handbuch (manual) für Befehle auf. Dieses Handbuch ist in Abschnitte unterteilt, wobei
+Abschnitt 1 Kommandos und Abschnitt 3 C-Bibliotheksfunktionen behandelt. Mit man 1 printf (bzw. man 3 printf) wird dann
+im jeweiligen Abnschnitt nach der Funktion printf durchsucht. Dies ergibt Sinn, da die Funktion printf sowohl als
+Kommando, als auch als Bibliotheksfunktion zu finden ist, sodass gezielt nach dem "richtigen" printf gesucht werden
+kann.
+
+
+3.
+
+(Vorher zum Ordner navigieren)
+grep 'todo' ./* -n
+
+
+4.
+
+(Vorher zum Vereichnis navigieren)
+gcc ./Datei.c -o exec.out
+
+
+5.
+
+Mit dem Befehl kann man einerseits Dateien und Ordner umbenennen und andererseits Dateien und Ordner verschieben.
+
+Umbenennen:
+(Vorher zum Verzeichnis navigieren, Datei hieß vorher 'alt' und soll 'neu' heißen)
+mv ./alt ./neu
+
+
+
+
+
+Theoriefragen: Variablen in C
+
+1.
+
+Block-Storage-Segment 	-	uninitialisierte Daten
+Datensegment 		-	vorinitialisierte Daten
+
+main() 				=>	Textsegment
+force() 			=>	Textsegment
+G				=>	Datensegment
+mErde				=>	Datensegment
+distanz				=>	Block-Storage-Segment
+d2				=>	Stack
+f				=>	Stack
+Paramter der Funktion force()	=>	Stack
+
+2.
+
+distanz und mErde sind globale Variablen, allerdings ist distanz nicht initialisiert und gelangt deshalb in das
+BSS(Block Storage)-Segment, welches zur Speicherung von uninitialisierten, globalen Daten dient. Da mErde initialisiert ist,
+findet in diesem Fall eine Speicherung im data-Segment, dem Segment für globale initialisierte Daten statt.
+
+
