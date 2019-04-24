@@ -9,3 +9,6 @@ add_executable(AlexExtended A0/qZahlen_extendedAlex.c)
 add_executable(Alex A0/qZahlenAlex.c)
 add_executable(Kevin A0/qzahlen.c)
 add_executable(KevinExtended A0/qzahlen_extended.c)
+
+
+target_link_libraries(Kevin m)
