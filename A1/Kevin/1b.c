@@ -1,8 +1,9 @@
 #include <stdio.h>
-#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 int main(int argc, char* argv[]) {
-    printf("Please choose one Entry:\n1.ps\n2.date\n3.ls\n");
 
     int choice;
     printf("Your choice (Number): ");
@@ -31,4 +32,21 @@ int main(int argc, char* argv[]) {
     }
 
     printf("Your choice was: %s\n", *answer);
+
+    int pid = fork();
+    if (pid == 0) {
+        // This is the child process
+        printf("I'm the child process, pid=%d\n", getpid());
+
+        // Exec the "ls" command
+        execlp(*answer, *answer, (char *)NULL);
+    } else if (pid == -1) {
+        // Oh crap, our fork() failed!
+    } else {
+        // This is the parent process
+        printf("I'm the parent process, pid=%d\n", getpid());
+        int status;
+        wait(&status);
+        printf("%d", status);
+    }
 }
