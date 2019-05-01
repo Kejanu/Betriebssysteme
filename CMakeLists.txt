@@ -14,6 +14,9 @@ add_executable(Kevin1a A1/Kevin/1a.c)
 add_executable(Kevin1b A1/Kevin/1b.c)
 #add_executable(Testen A1/Kevin/Testen.c)
 add_executable(Alex1a A1/Alex/1a.c)
+add_executable(Long1a A1/Weeb/1a.c)
+add_executable(Long1b A1/Weeb/1b.c)
+add_executable(Long1c A1/Weeb/1c.c)
 
 
 target_link_libraries(Kevin m)
