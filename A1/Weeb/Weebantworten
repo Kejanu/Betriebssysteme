@@ -1,0 +1,41 @@
+Dateien zusammenhängen
+1) cat a.txt
+gibt den Inhalt der a.txt datei zurück
+2) the same?
+3) überschreibt den Inhalt von b.txt mit a.txt, existiert b.txt nicht,
+so wird dieser erzeugt.
+4) hängt den Inhalt von a.txt an das Ende von b.txt dran, existiert b.txt nicht,
+so wird dieser erzeugt.
+
+2.) zombieprozess = entsteht, wenn der Elternprozess keine Abfrage zum Kindprozess durchführt, nachdem dieser
+	beendet wurde.
+   verwaister Prozess = Seine Eltern sind tot :(
+
+3.) endlos loop, zu viele Kindprozesse,
+Kindprozesse werden nicht terminiert => rip speicher
+loop geht trotzdem weiter, egal ob fork failed.
+system crash, da es immer mehr system resourcen braucht, da es immer wieder
+aufgerufen wird
+
+1. Generation
+fork erstellt neuen Prozess (Duplikat vom aufrufenden (Eltern) Prozess (Ep1))
+	wird Kindprozess genannt (Ep1Kp01)
+2 Prozesse laufen damit parallel in unterschieldichen speichersegmenten
+
+2. Generation
+fork erstellt neuen Kind Prozess wieder von Ep1, aber diesmal auch von EpKp01
+	diese werden nun, zur Veranschaulichung Ep1Kp02(vonEp1) und Ep1Kp01Kp01(von Ep1Kp01)
+	genannt
+4 Prozesse laufen damit parallel in unterschieldichen speichersegmenten
+
+3. Generation
+fork erstellt neuen Kind Prozess wieder von Ep1, Kp01, aber diesmal auch von
+		Ep1Kp02 und Ep1Kp01Kp01
+	diese werden nun, zur Veranschaulichung Ep1Kp03(von Ep1) und Ep1Kp01Kp02(von Kp01)
+	Ep1Kp02Kp01 (von Ep1Kp02) und Ep1Kp01Kp01Kp01(von Ep1Kp01Kp01) genannt
+8 Prozesse laufen damit parallel in unterschieldichen speichersegmenten
+
+n. Generation
+fork erstellt neuen Kind Prozess von n-1 laufenden Prozessen
+	dadurch wird die Anzahl der laufenden Prozesse nochmals verdoppelt
+2^n prozesse laufen damit parallel in unterschiedlichen Speichersegmenten
