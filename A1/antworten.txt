@@ -1,0 +1,46 @@
+
+Theoriefragen
+
+1.
+
+(a) gibt den Inhalt der angegebenen Datei auf der Standardausgabe aus
+
+(b) "-" steht für die Standardausgabe. Der Befehl schreibt also den Inhalt der Datei in die Standardausgabe
+
+(c) Inhalt von a.txt wird in b.txt geschrieben. (b.txt hat danach den gleichen Inhalt wie a.txt)
+
+(d) Inhalt von a.txt wird an den Inhalt von b.txt in b.txt angehangen.
+
+2.
+
+Zombieprozess:      beendeter Prozess, dessen exit-Status noch nicht vom Elternprozess mit wait überpruft wurde.
+                    Zombieprozesse lassen sich zudem noch in der Prozessliste finden.
+
+Verwaister Prozess: Prozess, dessen Elternprozess beendet wurde. Diese Prozesse werden dann vom Prozess mit der PID 1
+                    "adoptiert", welcher dann als neuer Elternprozess dient.
+
+Verwaiste und Zombieprozesse lassen sich durch einen entsprechenden wait-Aufruf verhindern. Wait-Aufrufe sorgen
+einerseits dafür, dass der exit-Status von Kindprozessen abgefragt wird und somit Zombieprozesse entgültig behandelt/
+beseitigt werden, wodurch dann schließlich die Beendigung eines Prozesses vollständig abgeschlossen wird und
+andererseits sorgen wait-Aufrufe auch dafür, dass ein Elternprozess wartet/sich "schlafen legt", bis alle
+Kindprozesse terminiert haben, bevor er zB. selbst terminiert, wodurch verwaiste Prozessse verhindert werden können.
+
+3.
+
+fork() wird für Eltern- und Kindprozesse aufgerufen, sodass sich die Anzahl der Prozesse fortlaufend exponentiell
+vergrößert, was nach einigen Generationen negative Folgen auf das Betriebssystem hat.
+
+    1.Generation: ursprünglicher Prozess A ruft fork() auf
+                  1 -> 2
+
+    2.Generation: ursprünglicher Prozess A und erster Kindprozess B rufen (aufgrund der Endlosschleife) fork() auf
+                  2 -> 4
+
+    3.Generation: ursprünglicher Prozess A, erster (B) und zweiter Kindprozess (C) und Kindprozess von B rufen fork()
+                  auf
+                  4 -> 8
+
+    n.Generation: 2^(n-1) Prozesse, die fork() aufrufen
+                  2^(n-1) -> 2^n
+
+    -> mit jeder neuen Generation verdoppelt sich die Anzahl an Prozessen
