@@ -19,21 +19,54 @@ int main(void) {
 
     while (1) {
 
-        char auswahl[5];
+        char auswahl[101];
         printf("\nBitte ein Zahl zur Auswahl eingeben.\n1.ps\n2.ls\n3.date\n");
 
 
-        if (scanf("%4s", &auswahl) != 1) {
+        if (scanf("%100s", &auswahl) != 1) {
             printf("Fehler bei scanf!");
             return 1;
         }
 
-        if (strncmp("exit", auswahl, 4)==0) {
+        /*
+         * Der Zeiger ptr, welcher den Rückgabewert abfängt, zeigt auf das erste Zeichen des jeweiligen Abschnittes
+         * in string. Das jeweilige Ende wird mit \0 in string gesetzt. D.h. der String wird verändert.
+         * Deshalb sollte man beim Verwenden von strtok immer nur eine Kopie eines Strings übergeben.
+         */
+        char* secondHalf = &auswahl[4];
+
+        if (strncmp("exit", auswahl, 4)==0 &&
+        //funtioniert nicht  array mit leerzeichen
+        strncmp("", secondHalf, 96 )==0) {
             printf("Programm beendet\n");
             return 0;
         }
 
-        int zahl = strtol(&auswahl[0], NULL , 10 );
+        int zahl=0;
+
+        char* pointer;
+
+        pointer = strtok(auswahl, " ");
+
+        if(pointer!=NULL){
+
+            if(strncmp(pointer, "ls", 2)==0){
+                zahl=2;
+                // neuer string ab [3] einfügen
+            }
+            if(strncmp(pointer, "ps", 2)==0){
+                zahl=1;
+            }
+            if(strncmp(pointer, "date", 4)==0){
+                zahl=3;
+            }
+        }
+
+
+
+
+
+
 
 
         pid_t returnValue;

@@ -17,6 +17,7 @@ add_executable(Alex1a A1/Alex/1a.c)
 add_executable(Test A1/Alex/Test.c)
 add_executable(Alex1b A1/Alex/1b.c)
 add_executable(Alex1c A1/Alex/1c.c)
+add_executable(Alexextended A1/Alex/1extended.c)
 
 
 
