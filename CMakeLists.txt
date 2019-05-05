@@ -9,9 +9,13 @@ add_executable(BS A0/qzahlen.c)
 add_executable(AlexExtended A0/qZahlen_extendedAlex.c)
 add_executable(Alex A0/qZahlenAlex.c A1/Alex/1a.c A1/Alex/1b.c A1/Alex/Test.c A1/Alex/1c.c A1/Alex/1extended.c)
 add_executable(Kevin A0/qzahlen.c)
-add_executable(KevinExtended A0/qzahlen_extended.c)
+
 add_executable(Kevin1a A1/Kevin/1a.c)
 add_executable(Kevin1b A1/Kevin/1b.c)
+add_executable(Kevin1c A1/Kevin/1c.c)
+add_executable(Kevin1extended A1/Kevin/1extended.c)
+
+
 #add_executable(Testen A1/Kevin/Testen.c)
 add_executable(Alex1a A1/Alex/1a.c)
 add_executable(Test A1/Alex/Test.c)
