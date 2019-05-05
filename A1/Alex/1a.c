@@ -1,11 +1,11 @@
-//
-// Created by akala on 29.04.2019.
-//
+
 
 
 #include <stdio.h>
 
 int main(void){
+
+    //Abfrage des gewünschten Aufrufs
 
     int auswahl=0;
     printf("Bitte ein Zahl zur Auswahl eingeben.\n1.ps\n2.ls\n3.date\n");
@@ -16,6 +16,7 @@ int main(void){
         return 1;
     }
 
+    //Ausgabe
 
     switch(auswahl){
 

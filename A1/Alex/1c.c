@@ -1,10 +1,4 @@
-//
-// Created by studi on 01.05.19.
-//
 
-//
-// Created by akala on 29.04.2019.
-//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,6 +12,8 @@ int main(void) {
 
 
         while (1) {
+
+            //Abfrage des gewünschten Aufrufs
 
             char auswahl[5];
             printf("\nBitte ein Zahl zur Auswahl eingeben.\n1.ps\n2.ls\n3.date\n");
@@ -35,6 +31,7 @@ int main(void) {
 
             int zahl = strtol(&auswahl[0], NULL , 10 );
 
+            //fork mit Fehlerabfrage
 
             pid_t returnValue;
             returnValue = fork();
@@ -57,7 +54,7 @@ int main(void) {
 
                 case 0:
 
-
+                    //Programmaufrufe
 
                     switch (zahl) {
 
