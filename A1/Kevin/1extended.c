@@ -17,8 +17,10 @@ int main(int argc, char* argv[]) {
         printf("Your choice (Number): ");
 
         // Scanf returns number of input items successfully matched and assigned
-        if (scanf("%d", &choice) != 1 || choice <= 0 || choice > 4)
+        if (scanf("%d", &choice) != 1 || choice <= 0 || choice > 4) {
             failed = 1;
+            printf("Your choice wasn't in the specified range. Program restarting...\n");
+        }
 
         if (failed) {
             while (getchar() != '\n');
@@ -38,8 +40,8 @@ int main(int argc, char* argv[]) {
                     *answer = "exit";
                     break;
                 default:
-                    printf("Your choice wasn't in the specified range. Program restarting...\n");
-                    failed = 1;
+                    printf("Code shouldn't be able to access this. Exiting...\n");
+                    exit(EXIT_FAILURE);
             }
             if (!failed) {
                 printf("Your choice was: %s\n", *answer);
@@ -80,10 +82,6 @@ void executeCmdWithFork(char* command[5]) {
     }
     *next = NULL;
 
-//    puts("Checking:");
-//    for (next = args; *next != 0; next++)
-//        puts(*next);
-
     pid_t retval;
     retval = fork();
     switch (retval) {
@@ -91,7 +89,6 @@ void executeCmdWithFork(char* command[5]) {
             perror("fork");
             exit(EXIT_FAILURE);
         case 0:
-            printf("Im the Child\n");
             if (execvp(*args, args) == -1) {
                 perror("execvp");
                 exit(EXIT_FAILURE);
