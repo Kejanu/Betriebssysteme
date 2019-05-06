@@ -28,7 +28,7 @@ Kindprozesse terminiert haben, bevor er zB. selbst terminiert, wodurch verwaiste
 3.
 
 fork() wird für Eltern- und Kindprozesse aufgerufen, sodass sich die Anzahl der Prozesse fortlaufend exponentiell
-vergrößert, was nach einigen Generationen negative Folgen auf das Betriebssystem hat.
+vergrößert, was nach einigen Generationen negative Folgen (Arbeitsspeicher wird überladen) auf das Betriebssystem hat.
 
     1.Generation: ursprünglicher Prozess A ruft fork() auf
                   1 -> 2

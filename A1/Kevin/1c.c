@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
         printf("Your choice (Number): ");
 
         // Scanf returns number of input items successfully matched and assigned
-        if (scanf("%1d", &choice) != 1 || choice <= 0 || choice > 4)
+        if (scanf("%d", &choice) != 1 || choice <= 0 || choice > 4)
             failed = 1;
 
         if (failed) {
