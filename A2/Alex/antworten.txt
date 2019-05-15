@@ -1,0 +1,85 @@
+
+
+Theoriefragen
+
+1.
+
++---+----------- ------------------+
+| A |CCCEE---CCCEE---CCCEECCEE---CC|
+| B |---CCEEE---CCEEE---CCEEE--CCEE|
+| C |-----CCC-----CCCEEEEEE-CCC----|
++---+----------- ------------------+
+
+Zeitscheibe: 3ms
+
+Prozess-ID CPU-Stoßlänge E/A-Stoßlänge
+    A           3           2
+    B           2           3
+    C           6           6
+
+
+2.
+
+Probleme des Round-Robin-Verfahrens:
+
+Wenn ein Prozess weniger Zeit für einen CPU-Stoß, als die Zeitscheibe dafür vorsieht und dieser Prozess dann die CPU
+abgibt, wird die CPU sofort neu vergeben und der Prozess wird nicht dafür belohnt, dass er die Zeitscheibe nicht
+vollständig ausgenutzt hat. Hat zudem ein Prozess seine Zeitscheibe ausgenutzt, aber seinen CPU-Stoß noch nicht
+abgeschlossen, gelangt er nach betriebsmittelentzug direkt in die Warteschlange, da kein E-/A-Stoß nötig ist, während
+Prozesse mit kürzeren CPU-Stößen erst nach einem E-/A-Stoß in die Schlange gelangen.
+Daraus folgt, dass Round-Robin vorteilhaft für Prozesse mit langen CPU-Stößen und
+nachteilhaft für Prozesse mit kurzen CPU-Stößen ist.
+
+Dieser Nachteil verschärft sich noch zusätzlich für Prozesse mit langen E-/A-Stößen, da Prozesse erst in die
+Warteschlange (an das Ende) gelangen, wenn der E-/A-Stoß abgeschlossen ist, sodass nicht beachtet wird, wie lange
+ein Prozess keinen CPU-Stoß gemacht hat, wodurch besonders E-/A-lastige Prozesse vergleichsweise wenig Zugang zur CPU
+bekommen.
+
+Es liegt also mit Round-Robin ein sehr einseitiges Scheduling-Verfahren vor, in dem die Verteilung sehr unfair
+abläuft.
+
+
+
+
+
+
+
+Primzahlserver
+
+
+1.
+
+Die Ausgabe von 'primeserv' wird in einen geteilten Speicher 'primzahl' abgelegt. Mit jeder neu produzierten Ausgabe
+von 'primeserv' wird dabei der alte Inhalt überschrieben. Nach jeder produzierten Primzahl legt sich der Thread, der
+'primeserv' um eine mit 'timespec' festgelegte Zeit schlafen (bei 'primeserv' 0sec?). Der Thread, der 'primeat'
+aufruft, legt sich nach dem Konsumieren jeder Zahl ebenfalls um eine mit 'timespec' festgelegte Zeit schlafen, die
+allerdings im Falle von 'primeat' 1 sec beträgt. Da sich der Thread, der'primeserv' aufruft, nur um 0 sek schlafen
+legt, werden in der Zeit, in der der Thread, der 'primeat' aufruft, schläft mehrere Primzahlen produziert
+(und im Speicher überschrieben), sodass immer wenn der Thread, der 'primeat' aufruft aufwacht und eine Zahl konsumiert,
+immer bereits einige Zahlen übersprungen wurden.
+
+3.
+
+Vor betreten eines Kritischen Abschnitts (hier die Ausgabe bei beiden Funktionen), muss wait (auf einer Semaphore)
+aufgerufen, damit ggf. blockiert werden kann. Dies ist bei 'primeserv' und 'primeat' zwingend notwendig. Gleichzeitig
+führt wait zu einer verringerung der semaphore um 1, falls diese einen Wert größer als 0 enthält. Die Struktur des
+Programmes erfordert, dass serv und eat gegenseitig auf die Aktion des anderen warten, um fortfahren zu können. Würden
+nun beide wait bzw. signal auf der gleichen Semaphore aufrufen (die hier mit 1 intitialisiert werden könnte, aufgrund
+der Speichergröße), würde nachdem der erste Thread den kritischen Abschnitt durchlaufen hat und die Semaphore um 1
+erhöht, also freigegeben hat, mehr oder weniger zufällig "entschieden", welcher der beiden Threads den kritischen
+Abschnitt betreten darf (Im vorliegenden Beispiel muss dabei noch das sleep beachtet werden). Dadurch kann aber nicht
+gewährleistet werden, dass beide Threads jeweils abwechselnd den kritischen Abschnitt betreten, sodass (durch
+sleep-Zeiten) wieder einige Primzahlen nicht konsumiert werden würden.
+Daher kann nur mit 2 Semaphoren gewähleistet werden, dass alle produzierten Primzahlen auch konsumiert werden.
+
+
+4.
+
+Als Datenstruktur müsste anstatt des int eine Struktur implementiert werden, die nach dem FIFO-Prinzip arbeitet, damit
+die Primzahlen in der richtigen Reihenfolge abgearbeitet werden. Der Zugriff auf diese Struktur muss dabei Teil des
+kritischen Abschnitts sein, da es sonst zu einer Fehlerhaften Datenstruktur kommen kann.
+Die Semaphore 'frei' müsste dann anstatt mit 1 mit der Kapazität der Datenstruktur initialisiert werden. Die wait- bzw.
+signal-Aufrufe können unverändert bleiben, da das Problem immernoch ein Erzeuger-Verbraucher-Problem ist. Mit dem
+veränderten Startwert der Semaphore, kann nun 'serv' die Struktur bis zum Maximum füllen (dann Semaphore 'frei' = 0).
+Gleichzeitig hat dies zur Folge, dass die Semaphore 'belegt' auch Werte größer als 1 enthalten wird. Die initialisierung
+dieser Semaphore muss allerdings unverändert bleiben.

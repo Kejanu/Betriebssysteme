@@ -24,5 +24,9 @@ add_executable(Alex1c A1/Alex/1c.c)
 add_executable(AlexExtended2 A1/Alex/1extended.c)
 
 
+add_executable(Vorgabe A2/Vorgabe/prime.c)
+add_executable(PrimeAlex A2/Alex/primeOld.c)
+add_executable(PrimeAlexExtended A2/Alex/prime.c)
+
 
 target_link_libraries(Kevin m)
