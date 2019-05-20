@@ -20,7 +20,7 @@
 #ifdef RINGBUFFER
 
 
-/* Buffer der Groeße 10 (mehrere Elemente*/
+/* Buffer der Groeße 10 (mehrere Elemente)*/
 
 int buffer[10];
 int indexEingabe = 0;

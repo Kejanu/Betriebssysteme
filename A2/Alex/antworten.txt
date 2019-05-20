@@ -4,18 +4,11 @@ Theoriefragen
 
 1.
 
-+---+----------- ------------------+
-| A |CCCEE---CCCEE---CCCEECCEE---CC|
-| B |---CCEEE---CCEEE---CCEEE--CCEE|
-| C |-----CCC-----CCCEEEEEE-CCC----|
-+---+----------- ------------------+
-
-Zeitscheibe: 3ms
-
-Prozess-ID CPU-Stoßlänge E/A-Stoßlänge
-    A           3           2
-    B           2           3
-    C           6           6
++---+-------------------------------+
+| A |CCCEE---CCCEE---CCCEECCCEE-- CC|
+| B |---CCEEE---CCEEE---CCEEE-- CCEE|
+| C |-----CCC-----CCCEEEEEE- CCC----|
++---+-------------------------------+
 
 
 2.
@@ -26,8 +19,8 @@ Wenn ein Prozess weniger Zeit für einen CPU-Stoß, als die Zeitscheibe dafür v
 abgibt, wird die CPU sofort neu vergeben und der Prozess wird nicht dafür belohnt, dass er die Zeitscheibe nicht
 vollständig ausgenutzt hat. Hat zudem ein Prozess seine Zeitscheibe ausgenutzt, aber seinen CPU-Stoß noch nicht
 abgeschlossen, gelangt er nach betriebsmittelentzug direkt in die Warteschlange, da kein E-/A-Stoß nötig ist, während
-Prozesse mit kürzeren CPU-Stößen erst nach einem E-/A-Stoß in die Schlange gelangen.
-Daraus folgt, dass Round-Robin vorteilhaft für Prozesse mit langen CPU-Stößen und
+Prozesse mit kürzeren CPU-Stößen erst nach einem E-/A-Stoß in die Schlange gelangen und somit länger bis zum
+Warteschlangeneintritt benötigen. Daraus folgt, dass Round-Robin vorteilhaft für Prozesse mit langen CPU-Stößen und
 nachteilhaft für Prozesse mit kurzen CPU-Stößen ist.
 
 Dieser Nachteil verschärft sich noch zusätzlich für Prozesse mit langen E-/A-Stößen, da Prozesse erst in die
@@ -51,18 +44,18 @@ Primzahlserver
 
 Die Ausgabe von 'primeserv' wird in einen geteilten Speicher 'primzahl' abgelegt. Mit jeder neu produzierten Ausgabe
 von 'primeserv' wird dabei der alte Inhalt überschrieben. Nach jeder produzierten Primzahl legt sich der Thread, der
-'primeserv' um eine mit 'timespec' festgelegte Zeit schlafen (bei 'primeserv' 0sec?). Der Thread, der 'primeat'
-aufruft, legt sich nach dem Konsumieren jeder Zahl ebenfalls um eine mit 'timespec' festgelegte Zeit schlafen, die
-allerdings im Falle von 'primeat' 1 sec beträgt. Da sich der Thread, der'primeserv' aufruft, nur um 0 sek schlafen
-legt, werden in der Zeit, in der der Thread, der 'primeat' aufruft, schläft mehrere Primzahlen produziert
-(und im Speicher überschrieben), sodass immer wenn der Thread, der 'primeat' aufruft aufwacht und eine Zahl konsumiert,
-immer bereits einige Zahlen übersprungen wurden.
+'primeserv' um eine mit 'timespec' festgelegte Zeit schlafen (bei 'primeserv' 0 sec + 500000000 ns = 0,5 sec ).
+Der Thread, der 'primeat' aufruft, legt sich nach dem Konsumieren jeder Zahl ebenfalls um eine mit 'timespec'
+festgelegte Zeit schlafen, die allerdings im Falle von 'primeat' 1,5 sec beträgt. Da sich der Thread, der'primeserv'
+aufruft, nur um 0,5 sec schlafen legt, werden in der Zeit, in der der Thread, der 'primeat' aufruft, schläft mehrere
+Primzahlen produziert (und im Speicher überschrieben), sodass immer wenn der Thread, der 'primeat' aufruft aufwacht
+und eine Zahl konsumiert, immer bereits einige Zahlen übersprungen wurden.
 
 3.
 
 Vor betreten eines Kritischen Abschnitts (hier die Ausgabe bei beiden Funktionen), muss wait (auf einer Semaphore)
 aufgerufen, damit ggf. blockiert werden kann. Dies ist bei 'primeserv' und 'primeat' zwingend notwendig. Gleichzeitig
-führt wait zu einer verringerung der semaphore um 1, falls diese einen Wert größer als 0 enthält. Die Struktur des
+führt wait zu einer verringerung der Semaphore um 1, falls diese einen Wert größer als 0 enthält. Die Struktur des
 Programmes erfordert, dass serv und eat gegenseitig auf die Aktion des anderen warten, um fortfahren zu können. Würden
 nun beide wait bzw. signal auf der gleichen Semaphore aufrufen (die hier mit 1 intitialisiert werden könnte, aufgrund
 der Speichergröße), würde nachdem der erste Thread den kritischen Abschnitt durchlaufen hat und die Semaphore um 1
