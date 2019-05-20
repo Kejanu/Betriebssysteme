@@ -108,7 +108,10 @@ static void* primserv(void *arg) {
 			continue;
 
 		/* Hier müsst Ihr ggf. Euren Code einfügen. */
-		sem_wait(&frei);
+		if( sem_wait(&frei) != 0){
+		    perror("Wait");
+            exit(EXIT_FAILURE);
+		}
 
 
 
@@ -131,7 +134,11 @@ static void* primserv(void *arg) {
 
 
 		/* Hier müsst Ihr ggf. Euren Code einfügen. */
-		sem_post(&belegt);
+		if( sem_post(&belegt) != 0){
+		    perror( "Post");
+		    exit(EXIT_FAILURE);
+
+		}
 
 
 
@@ -152,7 +159,10 @@ static void* primeat(void *arg) {
 	while (1) {
 
 		/* Hier müsst Ihr ggf. Euren Code einfügen. */
-		sem_wait(&belegt);
+		if( sem_wait(&belegt) != 0){
+		    perror("Wait");
+            exit(EXIT_FAILURE);
+		}
 
 		/*
 		 * Hier werden ebenfalls Steuercodes verwendet, Erklärung siehe
@@ -165,7 +175,10 @@ static void* primeat(void *arg) {
 
 
         /* Hier müsst Ihr ggf. Euren Code einfügen. */
-		sem_post(&frei);
+		if( sem_post(&frei) != 0){
+		    perror("Post");
+            exit(EXIT_FAILURE);
+		}
 
 		/* ein bisschen schlafenlegen ... Primzahlen Konsumieren macht muede! */
 		nanosleep(&sleepTime, NULL);
@@ -255,7 +268,7 @@ int main(int argc, const char *argv[]) {
         perror("Beeitigung der Semaphore");
         return EXIT_FAILURE;
     }
-    
+
 
 
 	printf("Alles ist aufgeräumt. Ende!\n");
