@@ -58,7 +58,7 @@ int bufferRemove(){
 
 #define ADD(x) bufferAdd(x);
 #define REMOVE bufferRemove()
-#define SEMFREI sem_init(&frei, 0, 10);
+#define CAP 10
 
 
 #else
@@ -67,7 +67,7 @@ unsigned int primzahl;
 
 #define ADD(x) primzahl = x;
 #define REMOVE primzahl
-#define SEMFREI sem_init(&frei, 0, 1);
+#define CAP 1
 
 #endif
 
@@ -109,6 +109,8 @@ static void* primserv(void *arg) {
 
 		/* Hier müsst Ihr ggf. Euren Code einfügen. */
 		sem_wait(&frei);
+
+
 
 		/*
 		 * Die Zeichenfolge "\033" dient zur Steuerung der Ausgabe auf der Konsole.
@@ -197,6 +199,7 @@ int main(int argc, const char *argv[]) {
 	 */
 	sa.sa_handler = signalHandler;
 	sigemptyset(&sa.sa_mask);
+
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1) {
 		perror("sigaction");
@@ -204,8 +207,17 @@ int main(int argc, const char *argv[]) {
 	}
 
 	/* Hier müsst Ihr ggf. Euren Code einfügen. */
-	SEMFREI
-	sem_init(&belegt, 0, 0);
+    if(sem_init(&frei, 0, CAP) != 0) {
+        perror("Initialisierung der Semaphore");
+        return EXIT_FAILURE;
+    }
+
+    if(sem_init(&belegt, 0, 0) != 0) {
+        perror("Initialisierung der Semaphore");
+        return EXIT_FAILURE;
+    }
+
+
 
 
 	/* Erzeuge primeserv-Thread */
@@ -234,8 +246,17 @@ int main(int argc, const char *argv[]) {
 	}
 
 	/* Hier müsst Ihr ggf. Euren Code einfügen. */
-	sem_destroy(&frei);
-	sem_destroy(&belegt);
+    if(sem_destroy(&frei) != 0) {
+        perror("Beseitigung der Semaphore");
+        return EXIT_FAILURE;
+    }
+
+    if(sem_destroy(&belegt) != 0) {
+        perror("Beeitigung der Semaphore");
+        return EXIT_FAILURE;
+    }
+    
+
 
 	printf("Alles ist aufgeräumt. Ende!\n");
 
