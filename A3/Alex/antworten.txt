@@ -1,0 +1,61 @@
+
+Theoriefragen
+
+a)
+
+1.
+
+Betriebsmittel sind hier im Szenario einerseits Klausurstapel und andererseits Notenliste.
+Der Klausurenstapel ist hier ein konsumierbares Betriebsmittel, da eine korrigierte Klausur nicht weiter beachtet
+werden muss und somit die Korrektur als "Konsumieren" der Klausur angesehen werden kann.
+Die Notenliste ist ein wiederverwendbares Betriebsmittel, da für jede Klausur die Notenliste benötigt wird und
+Vorraussetzung für die Korrektur ist, weshalb sie weitergereicht (also mehrfach verwendet) wird.
+
+2.
+
+i) mutual exclusion
+Da die Korrektur unter den Mitarbeitern geteilt wird und es nur einen Stapel und eine Liste gibt und ein Mitarbeiter
+zur Korrektur beides (vollständig) besitzen muss, sind die Betriebsmittel hier unteilbar.
+
+ii) hold and wait
+Da die Mitarbeiter, falls nicht alle Betriebsmittel da sind, warten, bis diese Vefügbar sind und falls sie eines von
+beiden besitzen, warten, während sie ein Betriebsmittel halten, liegt hier eine schrittweise Belegung der Betriebs-
+mittel vor.
+
+iii) no preemption
+Falls Mitarbeiter eines der beiden Betriebsmittel bereits besitzen, warten sie so lange, bis sie auch das andere
+bekommen und korrigieren können. Die Mitarbeiter geben die Betriebsmittel nur zurück, wenn sie ihre Korrekturphase
+abgeschlossen haben. Somit können die Betriebsmittel nicht zurückgefordert werden.
+
+Damit ein deadlock eintreten kann, muss noch zirkuläres Warten vorliegen. Das bedeutet, es gibt Prozesse, die
+jeweils bestimmte Betriebsmittel besitzen und jeweils auf die Betriebsmittel des anderen warten.
+
+
+3.
+
+Es liegt kein livelock vor, da einerseits durch das nicht-vorhandensein von Betriebsmitteln der Korrekturprozess
+blockiert wird, was für einen deadlock spricht und andererseits das Warten bei Menschen passiv und nicht aktiv ist
+und der Warteprozess nicht durch eine Aktion "gefüllt" wird.
+
+
+
+
+
+
+
+
+
+b)
+
+
+
+
+
+
+
+
+
+
+
+
+
