@@ -47,7 +47,71 @@ und der Warteprozess nicht durch eine Aktion "gefüllt" wird.
 
 b)
 
+Zunächst arbeiten beide Prozesse an etwas anderem (A 8 sec, B 3 sec.). Aufgrund der Arbeitszeit von B, holt sich B
+zuerst die Liste, was 3 sec. dauert. Da B damit 2 sec. bevor A die andere Arbeit abgeschlossen hat, fertig ist, holt
+sich B auch die Klausuren (4 sec.). Damit liegt hier eine Schrittweise Belegung der Betriebsmittel vor. A fordert
+währenddessen auch das Betriebsmittel Klausur an, erhält dies aber nicht. Hier wird deutlich, dass eine mutual
+exclusion vorliegt. Da B Liste und Klausuren hat, kann B korrigieren, was 5 sec. dauert. Danach werden beide
+Betriebsmittel wieder freigegeben und B arbeitet nun für 8 sec. an etwas anderem. In dieser Zeit kann sich A beide
+Betriebmittel holen (7 sec.) und damit auch korrigieren (5sec.). Während der Korrektur fordert B wieder die Liste an,
+erhält sie aber nicht. Nachdem A beide Betriebsmittel freigegeben hat, arbeitet A für 8 sec. B kann sich beide
+Betriebsmittel holen und korrigieren. A fordert erneut die Klausuren während der Korrektur an und erhält sie nicht.
+Nach der folgenden Freigabe arbeitet B für 2 sec. Währenddessen holt sich A die Klausuren, was 3 sec. dauert. Da B mit
+der Arbeit fertig ist, bevor sich A die Liste holen kann, holt sich B die Liste. Jetzt warten beide auf das jeweils
+andere Betriebsmittel und halten eines, somit liegt sowohl hold and wait, als auch circular wait vor und ein deadlock
+ist eingetreten.
 
+Der deadlock tritt nach 45? sec. ein
+
+B: 3 + 3 + 4 + 5 + 8
+
+A: 8 + 7 + 4 + 3 + 5 +
+
+Durchlauf: 12 sec.
+
+3 + 12 + 8 + 12 + 2 +
+
+8 + 7W + 12 + 8 +
+
+
+
+
+
+Im vorliegenden Beispiel tritt der deadlock auf, da bei beiden Mitarbeitern Schritt 2 und 3 (Tabelle) vertauscht sind.
+Da alle anderen Schritte parallel ausgeführt werden können, kommt es durch die variierenden Arbeitszeiten von B dazu,
+dass beide Prozesse ihren Schritt 2 ausführen und dann in Schritt 3 in einen deadlock gelangen.
+
+Konkret tritt der deadlock ein, wenn B zuletzt korrigiert hat und eine sehr kurze Arbeitszeit (2 sek.) hat. Dann gibt
+B die Betriebsmittel frei und A holt sich das erste. Bevor A dies abgeschlossen hat, wird B bereit und kann sich das
+zweite Betriebsmittel holen.
+
+
+Der Professor kann deadlocks überprüfen, indem beide Mitarbeiter fragt, welche Betriebsmittel sie haben und welche
+sie anfordern. Da der Professor die Anforderungsreihenfolge kennt, müsste er an die beiden Lagerungsorte der
+Betriebsmittel gehen und schauen, ob diese leer sind und ob an jedem ein Mitarbeiter wartet. Ist dies der Fall, liegt
+ein deadlock vor.
+
+
+//text
+
+
+
+Theoriefragen Deadlocks
+
+
+d)
+
+Wenn ein deadlock erkannt wurde, dann kann dieser nur noch durch einen Eingriff von außen aufgelöst werden. Da durch
+das zirkuläre Warten, Prozesse auf die Betriebsmittel des jeweils anderen warten, kann ein deadlock aufgelöst werden,
+indem einem der beiden Prozesse das Betriebsmittel, auf das der andere wartet, entzogen wird. Dabei kann dann ein
+Prozess weiter arbeiten, während der andere "neu starten" muss. Daher sollte bei der Auswahl des Prozesses, dem die
+Betriebsmittel entzogen werden, das "effektivste Opfer" gewählt werden.
+
+e)
+
+Der auftretende deadlock könnte vermieden werden, indem bei einem derbeiden Prozesse Schritt 2 und 3 getauscht werden
+würde. Dann könnte sich immer ein Prozess das erste Betriebsmittelholen. Da aufgrund der Reihenfolge der andere Prozess
+das zweite nicht besitzen kann, kann es nicht zu einem deadlock kommen.
 
 
 

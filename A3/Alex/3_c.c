@@ -34,6 +34,11 @@ void init_semaphores(void){
     }
 
 
+  
+
+
+
+
 	/* Ende des zu modifizierenden Bereichs in dieser Funktion */
 }
 
@@ -41,7 +46,7 @@ void init_semaphores(void){
 /*
  * Die Funktion der beiden Threads (Mitarbeiter_A und Mitarbeiter_B).
  */
-void *mitarbeiter_a(void *arg) { //todo Stellen der Semaphoren anpassen
+void *mitarbeiter_a(void *arg) {
 	char name = 'A';
 
 	printf("Mitarbeiter %c: Ich fange jetzt an.\n", name);
@@ -54,13 +59,29 @@ void *mitarbeiter_a(void *arg) { //todo Stellen der Semaphoren anpassen
 		/**
 		 * Der Mitarbeiter führt eine andere Arbeit aus.
 		 */
+
+
 		printf("Mitarbeiter %c: Jetzt arbeite ich an etwas anderem.\n", name);
+
+        if(sem_wait(&status) == -1) {
+            perror("Fehler bei Status");
+            exit(EXIT_FAILURE);
+        }
 		mitarbeiter_a_status = andere_arbeit;
+        if (sem_post(&status) == -1) {
+            perror("Konnte Semaphore status nicht freigeben");
+            exit(EXIT_FAILURE);
+        }
+
 		andere_arbeit_ausfuehren(name);
+
 		 
 		/* 
 		 * Klausuren holen.
 		 */
+
+
+
 		printf("Mitarbeiter %c: Ich hole mir jetzt die Klausuren.\n", name);
 
         if(sem_wait(&status) == -1) {
@@ -73,11 +94,13 @@ void *mitarbeiter_a(void *arg) { //todo Stellen der Semaphoren anpassen
             exit(EXIT_FAILURE);
         }
 
+
 		if(sem_wait(&klausuren) == -1) {
 			perror("Fehler beim Reservieren der Klausuren");
 			exit(EXIT_FAILURE);
 		}
-		sleep(4);
+
+        sleep(4);
 		printf("Mitarbeiter %c: Ich habe die Klausuren.\n", name);
 
 
@@ -93,27 +116,27 @@ void *mitarbeiter_a(void *arg) { //todo Stellen der Semaphoren anpassen
             perror("Fehler bei Status");
             exit(EXIT_FAILURE);
         }
-		mitarbeiter_a_status = hole_liste;
+        mitarbeiter_a_status = hole_liste;
         if (sem_post(&status) == -1) {
             perror("Konnte Semaphore status nicht freigeben");
             exit(EXIT_FAILURE);
         }
 
-
-
-		if(sem_wait(&liste) == -1) {
+        if(sem_wait(&liste) == -1) {
 			perror("Fehler beim Reservieren der Liste");
 			exit(EXIT_FAILURE);
 		}
+
+
 		sleep(3);
 		printf("Mitarbeiter %c: Ich habe die Liste.\n", name);
 		
 		/* 
 		 * Korrigieren.
 		 */
+
+
 		printf("Mitarbeiter %c: Ich korrigiere jetzt.\n", name);
-
-
 
         if(sem_wait(&status) == -1) {
             perror("Fehler bei Status");
@@ -129,22 +152,27 @@ void *mitarbeiter_a(void *arg) { //todo Stellen der Semaphoren anpassen
         sleep(5);
 		
 		/* 
-		 * Liste zurueckbringen.  //todo Semaphoren einfügen
+		 * Liste zurueckbringen.
 		 */
-		printf("Mitarbeiter %c: Jetzt bringe ich die Liste zurueck.\n", name);
+
+        printf("Mitarbeiter %c: Jetzt bringe ich die Liste zurueck.\n", name);
 		if (sem_post(&liste) == -1) {
 			perror("Konnte Semaphore liste nicht freigeben");
 			exit(EXIT_FAILURE);
 		}
+
 		
 		/* 
 		 * Klausuren zurueckbringen.
 		 */
-		 printf("Mitarbeiter %c: Jetzt bringe ich die Klausuren zurueck.\n", name);
+
+        printf("Mitarbeiter %c: Jetzt bringe ich die Klausuren zurueck.\n", name);
 		if (sem_post(&klausuren) == -1) {
 			perror("Konnte Semaphore klausuren nicht freigeben");
 			exit(EXIT_FAILURE);
 		}
+
+
 		/* Ende des zu modifizierenden Bereichs in dieser Funktion */
 	}
 	pthread_exit(NULL);
@@ -162,53 +190,111 @@ void *mitarbeiter_b(void *arg) {
 		/**
 		 * Der Mitarbeiter fuehrt eine andere Arbeit aus.
 		 */
+
+
+
 		printf("Mitarbeiter %c: Jetzt arbeite ich an etwas anderem.\n", name);
+
+        if(sem_wait(&status) == -1) {
+            perror("Fehler bei Status");
+            exit(EXIT_FAILURE);
+        }
 		mitarbeiter_b_status = andere_arbeit;
+        if (sem_post(&status) == -1) {
+            perror("Konnte Semaphore status nicht freigeben");
+            exit(EXIT_FAILURE);
+        }
+
 		andere_arbeit_ausfuehren(name);
-		
+
+
 		/* 
 		 * Liste  holen.
 		 */
+
+
 		printf("Mitarbeiter %c: Ich hole mir jetzt die Liste.\n", name);
+
+        if(sem_wait(&status) == -1) {
+            perror("Fehler bei Status");
+            exit(EXIT_FAILURE);
+        }
 		mitarbeiter_b_status = hole_liste;
+        if (sem_post(&status) == -1) {
+            perror("Konnte Semaphore status nicht freigeben");
+            exit(EXIT_FAILURE);
+        }
+
 		if(sem_wait(&liste) == -1) {
 			perror("Fehler beim Reservieren der Liste");
 			exit(EXIT_FAILURE);
 		}
+
+
 		sleep(3);
 		printf("Mitarbeiter %c: Ich habe die Liste.\n", name);
 		
 		/* 
 		 * Klausuren holen.
 		 */
+
+
 		printf("Mitarbeiter %c: Ich hole mir jetzt die Klausuren.\n", name);
+
+        if(sem_wait(&status) == -1) {
+            perror("Fehler bei Status");
+            exit(EXIT_FAILURE);
+        }
 		mitarbeiter_b_status = hole_klausuren;
+        if (sem_post(&status) == -1) {
+            perror("Konnte Semaphore status nicht freigeben");
+            exit(EXIT_FAILURE);
+        }
+
 		if(sem_wait(&klausuren) == -1) {
 			perror("Fehler beim Reservieren der Klausuren");
 			exit(EXIT_FAILURE);
 		}
+
+
 		sleep(4);
 		printf("Mitarbeiter %c: Ich habe die Klausuren.\n", name);
 		
 		/* 
 		 * Korrigieren.
 		 */
+
+
+
 		printf("Mitarbeiter %c: Ich korrigiere jetzt.\n", name);
+
+        if(sem_wait(&status) == -1) {
+            perror("Fehler bei Status");
+            exit(EXIT_FAILURE);
+        }
 		mitarbeiter_b_status = korrigieren;
+        if (sem_post(&status) == -1) {
+            perror("Konnte Semaphore status nicht freigeben");
+            exit(EXIT_FAILURE);
+        }
+
 		sleep(5);
-		
+
+
 		/* 
 		 * Klausuren zurueckbringen.
 		 */
-		 printf("Mitarbeiter %c: Jetzt bringe ich die Klausuren zurueck.\n", name);
+
+		printf("Mitarbeiter %c: Jetzt bringe ich die Klausuren zurueck.\n", name);
 		if (sem_post(&klausuren) == -1) {
 			perror("Konnte Semaphore klausuren nicht freigeben");
 			exit(EXIT_FAILURE);
-		} 
+		}
 		
 		/* 
 		 * Liste zurueckbringen.
 		 */
+
 		printf("Mitarbeiter %c: Jetzt bringe ich die Liste zurueck.\n", name);
 		if (sem_post(&liste) == -1) {
 			perror("Konnte Semaphore liste nicht freigeben");
@@ -234,9 +320,20 @@ void check_for_deadlocks(void) {
 	 * ! ! ! HIER EUREN CODE EINFÜGEN ! ! !
 	 */
 
+    if(sem_wait(&status) == -1) {
+        perror("Fehler bei Status");
+        exit(EXIT_FAILURE);
+    }
+
+    if((mitarbeiter_a_status == hole_klausuren && mitarbeiter_b_status == hole_liste) || (mitarbeiter_a_status == hole_liste && mitarbeiter_b_status == hole_klausuren)){
+        printf("\nProfessor: Deadlock erkannt");
+    }
 
 
-
+    if (sem_post(&status) == -1) {
+        perror("Konnte Semaphore status nicht freigeben");
+        exit(EXIT_FAILURE);
+    }
 
 
 	/* Ende des zu modifizierenden Bereichs in dieser Funktion */
