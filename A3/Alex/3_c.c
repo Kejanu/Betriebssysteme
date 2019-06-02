@@ -320,13 +320,17 @@ void check_for_deadlocks(void) {
 	 * ! ! ! HIER EUREN CODE EINFÜGEN ! ! !
 	 */
 
+    printf("Professor: Prüfe auf Deadlock\n");
+
     if(sem_wait(&status) == -1) {
         perror("Fehler bei Status");
         exit(EXIT_FAILURE);
     }
 
     if((mitarbeiter_a_status == hole_klausuren && mitarbeiter_b_status == hole_liste) || (mitarbeiter_a_status == hole_liste && mitarbeiter_b_status == hole_klausuren)){
-        printf("\nProfessor: Deadlock erkannt");
+        printf("Professor: Deadlock erkannt\n");
+    } else {
+        printf("Professor: Kein Deadlock erkannt\n");
     }
 
 

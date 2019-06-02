@@ -34,11 +34,6 @@ void init_semaphores(void){
     }
 
 
-
-
-
-
-
     /* Ende des zu modifizierenden Bereichs in dieser Funktion */
 }
 
@@ -180,7 +175,7 @@ void *mitarbeiter_a(void *arg) {
 
 void *mitarbeiter_b(void *arg) {
     char name = 'B';
-    int betriebsmittelnutzung = 0;
+    int betriebsmittelentzug;
 
     printf("Mitarbeiter %c: Ich fange jetzt an.\n", name);
 
@@ -192,39 +187,7 @@ void *mitarbeiter_b(void *arg) {
          * Der Mitarbeiter fuehrt eine andere Arbeit aus.
          */
 
-        goto START;
-
-        RESET:
-
-        if (sem_post(&status) == -1) {
-            perror("Konnte Semaphore status nicht freigeben");
-            exit(EXIT_FAILURE);
-        }
-
-        sleep(12.5);
-
-        if (sem_post(&liste) == -1) {
-            perror("Konnte Semaphore liste nicht freigeben");
-            exit(EXIT_FAILURE);
-        }
-
-        if(sem_wait(&status) == -1) {
-            perror("Fehler bei Status");
-            exit(EXIT_FAILURE);
-        }
-
-        mitarbeiter_b_status = andere_arbeit;
-
-        if (sem_post(&status) == -1) {
-            perror("Konnte Semaphore status nicht freigeben");
-            exit(EXIT_FAILURE);
-        }
-
-
-
-
-        START:
-
+        restart:
 
         printf("Mitarbeiter %c: Jetzt arbeite ich an etwas anderem.\n", name);
 
@@ -248,6 +211,8 @@ void *mitarbeiter_b(void *arg) {
 
         printf("Mitarbeiter %c: Ich hole mir jetzt die Liste.\n", name);
 
+
+
         if(sem_wait(&status) == -1) {
             perror("Fehler bei Status");
             exit(EXIT_FAILURE);
@@ -258,8 +223,13 @@ void *mitarbeiter_b(void *arg) {
             exit(EXIT_FAILURE);
         }
 
-        if(sem_wait(&liste) == -1) {
-            perror("Fehler beim Reservieren der Liste");
+
+
+
+
+
+        if( sem_getvalue(&liste, &betriebsmittelentzug) == -1){
+            perror("Fehler bei Semaphorenprüfung");
             exit(EXIT_FAILURE);
         }
 
@@ -274,46 +244,54 @@ void *mitarbeiter_b(void *arg) {
 
         printf("Mitarbeiter %c: Ich hole mir jetzt die Klausuren.\n", name);
 
-        if(sem_wait(&status) == -1) {
-            perror("Fehler bei Status");
-            exit(EXIT_FAILURE);
-        }
 
-        mitarbeiter_b_status = hole_klausuren;
+        //todo fertig machen und sem status grosszuegig um den ganzen Block (rot markiert), KOPIERFEHLER DRIN, mit 3c vergleichen
 
 
-        /* Dieser Punkt kann nur erreicht werden, wenn B die Liste hat.
-         *  -> Semaphorenabfrage: hat A die Klausuren (B kann hier nicht beides haben)
-         *  -> Wenn ja deadlock vorher abfangen und B die Liste entziehen
+       if (betriebsmittelentzug == 0){
+           sleep(14);
+
+           if(sem_wait(&status) == -1) {
+               perror("Fehler bei Status");
+               exit(EXIT_FAILURE);
+           }
+           mitarbeiter_b_status = andere_arbeit;
+           if (sem_post(&status) == -1) {
+               perror("Konnte Semaphore status nicht freigeben");
+               exit(EXIT_FAILURE);
+           }
+
+           goto restart;
+       }
+
+       if(sem_wait(&liste) == -1) {
+           perror("Fehler beim Reservieren der Liste");
+           exit(EXIT_FAILURE);
+       }
+
+
+       if(sem_wait(&status) == -1) {
+           perror("Fehler bei Status");
+           exit(EXIT_FAILURE);
+       }
+       mitarbeiter_b_status = hole_klausuren;
+       if (sem_post(&status) == -1) {
+           perror("Konnte Semaphore status nicht freigeben");
+           exit(EXIT_FAILURE);
+       }
+
+       if(sem_wait(&klausuren) == -1) {
+           perror("Fehler beim Reservieren der Klausuren");
+           exit(EXIT_FAILURE);
+       }
+
+
+       sleep(4);
+       printf("Mitarbeiter %c: Ich habe die Klausuren.\n", name);
+
+       /*
+        * Korrigieren.
         */
-
-
-        if(sem_getvalue( &klausuren, &betriebsmittelnutzung) == -1){
-            perror("Fehler bei Abfrage");
-            exit(EXIT_FAILURE);
-        }
-
-        if(betriebsmittelnutzung == 0)
-            goto RESET;
-
-
-        if(sem_wait(&klausuren) == -1) {
-            perror("Fehler beim Reservieren der Klausuren");
-            exit(EXIT_FAILURE);
-        }
-
-        if (sem_post(&status) == -1) {
-            perror("Konnte Semaphore status nicht freigeben");
-            exit(EXIT_FAILURE);
-        }
-
-
-        sleep(4);
-        printf("Mitarbeiter %c: Ich habe die Klausuren.\n", name);
-
-        /*
-         * Korrigieren.
-         */
 
 
 
@@ -371,17 +349,16 @@ void check_for_deadlocks(void) {
      * ! ! ! HIER EUREN CODE EINFÜGEN ! ! !
      */
 
-    printf("Professor: Prüfe auf Deadlock\n");
-
     if(sem_wait(&status) == -1) {
         perror("Fehler bei Status");
         exit(EXIT_FAILURE);
     }
 
     if((mitarbeiter_a_status == hole_klausuren && mitarbeiter_b_status == hole_liste) || (mitarbeiter_a_status == hole_liste && mitarbeiter_b_status == hole_klausuren)){
-        printf("Professor: Deadlock erkannt\n\nProfessor: B wird die Liste entzogen...\n");
-    } else {
-        printf("Professor: Kein Deadlock erkannt\n");
+        printf("\nProfessor: Deadlock erkannt");
+
+
+        //todo Betriebsmittelentzug
     }
 
 
@@ -394,3 +371,6 @@ void check_for_deadlocks(void) {
     /* Ende des zu modifizierenden Bereichs in dieser Funktion */
     return;
 }
+
+
+
