@@ -1,0 +1,52 @@
+
+
+Theoriefragen
+
+1.)
+
+Unter Verschnitt versteht man Speicher, den man aufgrund von Allozierungsstrategien praktisch nicht mehr nutzen kann.
+Externer Verschnitt tritt auf, wenn beispielweise mit First- oder Best-Fit gearbeitet wird. Dadurch, dass beim
+Allozieren freie Speicherbereiche nicht komplett ausgefüllt werden oder beim Freigeben von Speicher "Lücken" frei
+werden, gibt es Abschnitte mit ungenutztem Speicher, der aufgrund der Größe nicht belegt werden kann, sodass es dazu
+kommen kann, dass Obwohl im Speicher für eine Anfrage genug Platz wäre, keine Speicherung stattfinden kann, da es nicht
+genügend zusammenhängenden Speicher gibt, da Speicherbereiche aufgrund von Adressierung nicht einfach verschoben werden
+können. Interner Verschnitt tritt bei Strategien, die mit festen Blockgrößen arbeiten, auf (zB Buddy). Wenn eine
+Anfrage einer bestimmten Größe gestellt wird, dann muss diese Größe auf die nächstgrößere Blockanzahl gerundet werden.
+Somit wird mehr Speicher, als benötigt Alloziert, welcher ungenutzt bleibt.
+
+Interner Verschnitt wird riskiert, da es Unabhängig von der Strategie immer einen Verschnitt gibt und bei externem
+Verschnitt der Speicher gänzlich ungenutzt bleibt und interner Verschnitt eventuelle folgende Anfragen zur
+Speicherbereichvergrößerung u.U. vermeiden könnte.
+
+
+2.)
+
+a)
+
+Bei einem Zugriff auf den Inhalt einer Seite, wird die eingegebene logische Adresse über eine Tabelle in die
+richtige physikalische Adresse umgerechnet. Ändert sich nun der physikalische Adrssbereich einer Seite, muss die Tabelle
+(durch das Betriebssystem) angepasst werden, wodurch trotz geändeter physikalischer Adressen gleichbleibend auf die
+Seite zugegriffen werden kann. Das Betriebssystem muss also in diesem Fall die Tabelle anpassen, sonst ist allerdings
+keine gesonderte Behandlung nötig.
+
+b)
+
+Der TLB muss geleert werden, da ein Kontextwechsel eine Änderung der "Übersetzungstabellen" beinhaltet. Nach dem
+Kontextwechsel sind die Adressen im TLB damit veraltet und somit falsch. Würden diese Adressen genutzt werden, würde
+auf die physikalischen Adressen vor dem Kontextwechsel zugegriffen werden, an denen sich u.U. andere Daten befinden,
+was Schaden anrichten könnte bzw. falsche Daten liefert.
+
+
+3.)
+
++----------------+--------------------------------+
+|Start           |AAABBB CCCCCC        DDDDDEEEEE |
+|A: Freigeben    |   BBB CCCCCC        DDDDDEEEEE |
+|F: Belegt 4 MiB |   BBB CCCCCCFFFF    DDDDDEEEEE |
+|A: Belegt 2 MiB |AA BBB CCCCCCFFFF    DDDDDEEEEE |
+|B: Freigeben    |AA     CCCCCCFFFF    DDDDDEEEEE |
+|E: Freigeben    |AA     CCCCCCFFFF    DDDDD      |
+|E: Belegt 7 MiB |AA     CCCCCCFFFF    DDDDD      |
+|E: Freigeben    |AA     CCCCCCFFFF    DDDDD      |
+|E: Belegt 4 MiB |AAEEEE CCCCCCFFFF    DDDDD      |
++----------------+--------------------------------+
