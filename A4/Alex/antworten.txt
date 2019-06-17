@@ -7,17 +7,16 @@ Theoriefragen
 Unter Verschnitt versteht man Speicher, den man aufgrund von Allozierungsstrategien praktisch nicht mehr nutzen kann.
 Externer Verschnitt tritt auf, wenn beispielweise mit First- oder Best-Fit gearbeitet wird. Dadurch, dass beim
 Allozieren freie Speicherbereiche nicht komplett ausgefüllt werden oder beim Freigeben von Speicher "Lücken" frei
-werden, gibt es Abschnitte mit ungenutztem Speicher, der aufgrund der Größe nicht belegt werden kann, sodass es dazu
+werden, gibt es Abschnitte mit ungenutztem Speicher, der aufgrund der Größe (möglicherweise gering) nicht belegt werden kann, sodass es dazu
 kommen kann, dass Obwohl im Speicher für eine Anfrage genug Platz wäre, keine Speicherung stattfinden kann, da es nicht
 genügend zusammenhängenden Speicher gibt, da Speicherbereiche aufgrund von Adressierung nicht einfach verschoben werden
 können. Interner Verschnitt tritt bei Strategien, die mit festen Blockgrößen arbeiten, auf (zB Buddy). Wenn eine
 Anfrage einer bestimmten Größe gestellt wird, dann muss diese Größe auf die nächstgrößere Blockanzahl gerundet werden.
 Somit wird mehr Speicher, als benötigt Alloziert, welcher ungenutzt bleibt.
 
-Interner Verschnitt wird riskiert, da es Unabhängig von der Strategie immer einen Verschnitt gibt und bei externem
-Verschnitt der Speicher gänzlich ungenutzt bleibt und interner Verschnitt eventuelle folgende Anfragen zur
-Speicherbereichvergrößerung u.U. vermeiden könnte.
-
+Interner Verschnitt wird riskiert, da es sinnvoller ist, zusätzlichen Speicher zu allozieren, als Speicher ungenutzt
+zu lassen. Außerdem kann interner Verschnitt u.U. eventuelle folgende Anfragen zur Speicherbereichvergrößerung
+vermeiden.
 
 2.)
 

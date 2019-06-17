@@ -70,8 +70,9 @@ int main(void)
 	printf("Alloziere   1   B -> %p\n", addr[i++] = ff_alloc(1));
 	dump_memory();
 	
-	printf("Gebe %p (200 kiB) frei\n", addr[3]);
-	ff_free(addr[7]);
+	/* original Test falsche Ausgabe: printf("Gebe %p (200 kiB) frei\n", addr[3]); */
+    printf("Gebe %p (200 kiB) frei\n", addr[7]);
+    ff_free(addr[7]);
 	*addr[7] = 'F';
 	dump_memory();
 	
