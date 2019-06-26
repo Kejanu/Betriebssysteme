@@ -13,6 +13,13 @@
 
 void copyUsingBuffer(char from[], char to[], long unsigned int bufferSize) {
 
+    clock_t t_start, t_end;
+
+    if((t_start = clock()) == -1){
+        perror("Fehler bei Zeitmessung");
+        exit(EXIT_FAILURE);
+    }
+
     char buffer[bufferSize];
     int fd_from, fd_to;
     ssize_t read_count = 1;
@@ -68,8 +75,6 @@ void copyUsingBuffer(char from[], char to[], long unsigned int bufferSize) {
             exit(EXIT_FAILURE);
         }
 
-
-
         if(read_count != 0){
             //Es befindet sich etwas im Puffer zum Kopieren
 
@@ -94,9 +99,23 @@ void copyUsingBuffer(char from[], char to[], long unsigned int bufferSize) {
         exit(EXIT_FAILURE);
     }
 
+    if((t_end = clock()) == -1){
+        perror("Fehler bei Zeitmessung");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Zeit benötigt: %ld ms\n", (t_end - t_start));
+
 }
 
 void copyUsingFullRead(char from[], char to[]) {
+
+    clock_t t_start, t_end;
+
+    if((t_start = clock()) == -1){
+        perror("Fehler bei Zeitmessung");
+        exit(EXIT_FAILURE);
+    }
 
     int fd_from, fd_to;
 
@@ -156,9 +175,23 @@ void copyUsingFullRead(char from[], char to[]) {
         exit(EXIT_FAILURE);
     }
 
+    if((t_end = clock()) == -1){
+        perror("Fehler bei Zeitmessung");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Zeit benötigt: %ld ms\n", (t_end - t_start));
+
 }
 
 void copyUsingMap(char from[], char to[]) {
+
+    clock_t t_start, t_end;
+
+    if((t_start = clock()) == -1){
+        perror("Fehler bei Zeitmessung");
+        exit(EXIT_FAILURE);
+    }
 
     int fd_from, fd_to;
 
@@ -218,9 +251,23 @@ void copyUsingMap(char from[], char to[]) {
         exit(EXIT_FAILURE);
     }
 
+    if((t_end = clock()) == -1){
+        perror("Fehler bei Zeitmessung");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Zeit benötigt: %ld ms\n", (t_end - t_start));
+
 }
 
 void copyUsingSystemCall(char from[], char to[]) {
+
+    clock_t t_start, t_end;
+
+    if((t_start = clock()) == -1){
+        perror("Fehler bei Zeitmessung");
+        exit(EXIT_FAILURE);
+    }
 
 	struct stat statBuffer;
 	int sourceFD, destFD;
@@ -269,4 +316,11 @@ void copyUsingSystemCall(char from[], char to[]) {
 	// Dateien schliessen
 	close(sourceFD);
 	close(destFD);
+
+    if((t_end = clock()) == -1){
+        perror("Fehler bei Zeitmessung");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Zeit benötigt: %ld ms\n", (t_end - t_start));
 }

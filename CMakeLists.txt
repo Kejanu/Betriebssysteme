@@ -28,5 +28,7 @@ add_executable(Vorgabe A2/Vorgabe/prime.c)
 add_executable(PrimeAlex A2/Alex/primeOld.c)
 add_executable(PrimeAlexExtended A2/Alex/prime.c)
 
+add_executable(StringGenerator Temp/StringGenerator.c)
+
 
 target_link_libraries(Kevin m)
