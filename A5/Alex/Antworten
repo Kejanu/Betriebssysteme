@@ -1,0 +1,48 @@
+
+Theoriefragen
+
+1.)
+
+-Dateideskriptor, der beim Öffnen erstellt wird, liefert Zugriff auf einen Stream
+-Lese-/Schreibzeiger kann auf dem Stream verschoben/positionert werden (Repräsentiert Lese-/Schreibkopf)
+-Lese-/Schreiboperationen werden an der Stelle des Zeigers ausgeführt
+-Zu Beginn: Zeiger am Anfang der Datei (Stream)
+
+2.)
+
+-UNIX Peripheriegeräte werden durch Spezialdateien repräsentiert
+-"Kommunikation" durch lesen/beschreiben der Dateien
+-Öffnen/Schließen entspricht Verbindungsherstellung/Abbruch
+
+Blockorientierte Geräte (zB Festplatten)
+-Bezug auf eine bestimmte Menge von Daten -> Blöcke
+-Inhalt irrelevant
+
+Zeichenorientierte Geräte (zB Drucker)
+-Bezug auf den Inhalt der Daten
+-Funktion des Gerätes basiert auf dem Inhalt der Daten
+
+3.)
+
+a) Blockweises Einlesen
+
+-langsamer, da Inhalte, die eingelesen werden sollen mindestens doppelt (Abhängig von Buffer) werden müssen
+-Auslagerung des Prozesses möglich (nach dem Abschluss der Bearbeitung eines Blocks)
+-Bearbeitung und Einlesen von Daten parallel möglich
+
+
+b) vollständiges Einlesen
+
+-Verlust von Daten, die vor der Leseoperation eintreffen möglich
+-Das komplette Lesen der Datei müsste abgeschlossen werden, bevor wieder auf das Gerät zugegriffen werden kann, da
+ Prozesse, die E/A-Operationen ausführen nicht ausgelagert werden können -> das Schreiben kann scheitern
+
+
+c)mmap
+
+-Einfachere Nutzung, effizienter als mit read/write, da weniger Wechsel zwischen User/Kernel
+-Schreiben: Zusätzlicher Aufwand zum Schreiben aus Speicherabbild in Zieldatei
+
+d)sendfile
+
+-effizienter als Nutzung von read/write, das sendfile mit dem Kernel arbeitet
